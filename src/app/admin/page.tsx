@@ -29,7 +29,7 @@ async function getStats() {
     villas: villasCount ?? 0,
     bookings: bookingsCount ?? 0,
     pending: pendingCount ?? 0,
-    recent: (recent.data ?? []) as Array<{
+    recent: (recent.data ?? []) as unknown as Array<{
       id: string;
       start_date: string;
       end_date: string;

@@ -170,8 +170,8 @@ export async function deleteVillaAction(villaId: string): Promise<
     if (villa?.images?.length) {
       const admin = createAdminClient();
       const paths = villa.images
-        .map((url) => extractStoragePath(url))
-        .filter((path): path is string => Boolean(path));
+        .map((url: string) => extractStoragePath(url))
+        .filter((path: string | null): path is string => Boolean(path));
       if (paths.length > 0) {
         await admin.storage.from(VILLA_IMAGES_BUCKET).remove(paths);
       }

@@ -1,14 +1,14 @@
 export type BookingStatus = "pending" | "confirmed" | "cancelled";
 
-export interface Profile {
+export type Profile = {
   id: string;
   email: string | null;
   full_name: string | null;
   is_admin: boolean;
   created_at: string;
-}
+};
 
-export interface Villa {
+export type Villa = {
   id: string;
   slug: string;
   title: string;
@@ -23,9 +23,9 @@ export interface Villa {
   is_published: boolean;
   created_at: string;
   updated_at: string;
-}
+};
 
-export interface Booking {
+export type Booking = {
   id: string;
   user_id: string;
   villa_id: string;
@@ -36,7 +36,7 @@ export interface Booking {
   status: BookingStatus;
   notes: string | null;
   created_at: string;
-}
+};
 
 export interface BookingWithVilla extends Booking {
   villa: Pick<Villa, "id" | "title" | "slug" | "location" | "images"> | null;
@@ -47,33 +47,40 @@ export interface BookingWithDetails extends Booking {
   profile: Pick<Profile, "id" | "email" | "full_name"> | null;
 }
 
-export interface Database {
-  public: {
+type TableDef<Row, Insert, Update> = {
+  Row: Row;
+  Insert: Insert;
+  Update: Update;
+  Relationships: [];
+};
+
+/** Matches Supabase `GenericSchema` so clients infer table types correctly. */
+export type PublicSchema = {
     Tables: {
-      profiles: {
-        Row: Profile;
-        Insert: Partial<Profile> & { id: string };
-        Update: Partial<Profile>;
-      };
-      villas: {
-        Row: Villa;
-        Insert: Omit<Villa, "id" | "created_at" | "updated_at"> & {
+      profiles: TableDef<
+        Profile,
+        Partial<Profile> & { id: string },
+        Partial<Profile>
+      >;
+      villas: TableDef<
+        Villa,
+        Omit<Villa, "id" | "created_at" | "updated_at"> & {
           id?: string;
           created_at?: string;
           updated_at?: string;
-        };
-        Update: Partial<Omit<Villa, "id" | "created_at">>;
-      };
-      bookings: {
-        Row: Booking;
-        Insert: Omit<Booking, "id" | "created_at" | "status" | "total_price"> & {
+        },
+        Partial<Omit<Villa, "id" | "created_at">>
+      >;
+      bookings: TableDef<
+        Booking,
+        Omit<Booking, "id" | "created_at" | "status" | "total_price"> & {
           id?: string;
           status?: BookingStatus;
           total_price?: number;
           created_at?: string;
-        };
-        Update: Partial<Omit<Booking, "id" | "created_at">>;
-      };
+        },
+        Partial<Omit<Booking, "id" | "created_at">>
+      >;
     };
     Views: {
       villa_availability: {
@@ -82,7 +89,17 @@ export interface Database {
           start_date: string;
           end_date: string;
         };
+        Relationships: [];
       };
     };
-  };
-}
+    Functions: {
+      is_admin: {
+        Args: Record<string, never>;
+        Returns: boolean;
+      };
+    };
+};
+
+export type Database = {
+  public: PublicSchema;
+};
