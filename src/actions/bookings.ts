@@ -5,7 +5,12 @@ import { z } from "zod";
 
 import { isCurrentUserAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import type { BookingStatus } from "@/lib/types";
+import type { BookingStatus, Villa } from "@/lib/types";
+
+type VillaForBooking = Pick<
+  Villa,
+  "id" | "price_per_night" | "guests" | "is_published"
+>;
 import { nightsBetween } from "@/lib/utils";
 
 const BookingSchema = z
@@ -58,7 +63,8 @@ export async function createBookingAction(input: {
     .from("villas")
     .select("id, price_per_night, guests, is_published")
     .eq("id", parsed.data.villaId)
-    .maybeSingle();
+    .maybeSingle()
+    .returns<VillaForBooking>();
 
   if (villaError || !villa) {
     return { ok: false, error: "Villa not found." };

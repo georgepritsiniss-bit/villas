@@ -94,7 +94,7 @@ export type PublicSchema = {
     };
     Functions: {
       is_admin: {
-        Args: Record<string, never>;
+        Args: Record<string, unknown>;
         Returns: boolean;
       };
     };
