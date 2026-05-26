@@ -6,12 +6,12 @@ import { z } from "zod";
 import { isCurrentUserAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import type { BookingStatus, Villa } from "@/lib/types";
+import { nightsBetween } from "@/lib/utils";
 
 type VillaForBooking = Pick<
   Villa,
   "id" | "price_per_night" | "guests" | "is_published"
 >;
-import { nightsBetween } from "@/lib/utils";
 
 const BookingSchema = z
   .object({
