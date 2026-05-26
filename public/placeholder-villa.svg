@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#c6d8cd"/>
+      <stop offset="100%" stop-color="#f5ede0"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#sky)"/>
+  <path d="M0 450 L160 360 L320 420 L480 340 L640 410 L800 360 L800 600 L0 600 Z" fill="#9ebbac"/>
+  <path d="M260 420 V300 L400 200 L540 300 V420 H470 V340 H330 V420 Z" fill="#fbf8f3" stroke="#345148" stroke-width="6"/>
+  <text x="400" y="540" font-family="Georgia, serif" font-size="32" text-anchor="middle" fill="#345148">Villa photo</text>
+</svg>
